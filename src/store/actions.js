@@ -58,9 +58,21 @@ export const advertsLoaded = adverts => {
   };
 };
 
-export const loadAdverts = () => async (dispatch, getState) => {
-  const fetchedAdverts = await adverts.getAdverts();
+export const loadAdverts = (filters) => async (dispatch, getState) => {
+  const fetchedAdverts = await adverts.getAdverts(filters);
   dispatch(advertsLoaded(fetchedAdverts.result.rows));
+};
+
+export const advertLoaded = advert => {
+  return {
+    type: ADVERT_LOADED,
+    payload: advert,
+  };
+};
+
+export const loadAdvert = (advertId) => async (dispatch, getState) => {
+  const fetchedAdvert = await adverts.getAdvert(advertId);
+  dispatch(advertLoaded(fetchedAdvert.result));
 };
 
 export const advertCreated = advert => {

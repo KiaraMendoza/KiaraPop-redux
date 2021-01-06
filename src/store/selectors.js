@@ -1,13 +1,7 @@
 export const getLoggedUserToken = state => state.auth;
 
-export const getAdvertsOnState = state => {
-  if (!state.adverts) {
-    return null;
-  }
+export const getAdvertsOnState = state => state.adverts ? state.adverts : null
 
-  return state.adverts;
-};
-
-// const getAdvert = advertId => state => state.adverts.find(a => a.id === advertId);
+export const getAdvertOnState = state => state.advert ? state.advert : null;
 
 export const getUi = state => state.ui;

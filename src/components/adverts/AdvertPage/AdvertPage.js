@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import T from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Divider, Image, Typography, Statistic, Row, Col } from 'antd';
@@ -10,39 +10,32 @@ import { DeleteOutlined } from '@ant-design/icons';
 import placeholder from '../../../assets/photo-placeholder.png';
 import Tags from '../Tags';
 import { formatter } from '../../../utils/numbers';
+import { loadAdvert } from '../../../store/actions';
+import { getAdvertOnState, getUi } from '../../../store/selectors';
+import { connect } from 'react-redux';
 
 const { Title } = Typography;
 
-const AdvertPage = (props) => {
+const AdvertPage = ({ loadAdvert, advert, error, history, ...props }) => {
 
-  const getAdvertId = () => this.props.match.params.id;
+  const getAdvertId = () => props.match.params.id;
 
   const handleDeleteClick = () => {
-    const { history } = props;
     deleteAdvert(getAdvertId()).then(() => history.push('/'));
   };
 
   const handleGetAdvert = async () => {
-    try {
-      const { result } = await getAdvert(getAdvertId());
-      if (!result) {
-        const error = { message: 'Not found' };
-        throw error;
-      }
-      this.setState({ advert: result });
-    } catch (error) {
-      this.setState({ error });
-    }
+    loadAdvert(getAdvertId());
   };
 
   const renderAdvert = () => {
-    const { advert, error } = this.state;
 
     if (error) {
       return <Redirect to="/404" />;
     }
 
     if (!advert) {
+      console.log(advert)
       return null;
     }
 
@@ -95,7 +88,7 @@ const AdvertPage = (props) => {
 
   useEffect(() => {
     handleGetAdvert();
-  })
+  }, [props.match.params.id]);
 
   return (
     <Layout title="Advert detail">
@@ -108,6 +101,15 @@ const AdvertPage = (props) => {
 AdvertPage.propTypes = {
   match: T.shape({ params: T.shape({ id: T.string.isRequired }).isRequired })
     .isRequired,
-};
+}; 
 
-export default AdvertPage;
+const mapStateToProps = (state) => {
+  return {
+    advert: getAdvertOnState(state),
+    ui: getUi(state),
+  }
+}
+
+export default connect(mapStateToProps, dispatch => ({
+  loadAdvert: (advertId) => dispatch(loadAdvert(advertId))
+}))(AdvertPage);

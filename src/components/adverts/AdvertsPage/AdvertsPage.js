@@ -14,29 +14,28 @@ const AdvertsPage = ({loadAdverts, loading, error, adverts}) => {
   const [filters, setFilters] = useState(storage.get('filters') || defaultFilters)
 
   const handleLoadAdverts = () => {
-    loadAdverts();
+    loadAdverts(formatFilters());
   }
 
   const formatFilters = () => {
-    const {
-      filters: { name, sale, price, tags },
-    } = this.state;
+    const { name, sale, price, tags } = filters;
+    
+    const formattedFilters = {};
 
-    const filters = {};
     if (name) {
-      filters.name = name;
+      formattedFilters.name = name;
     }
     if (['sell', 'buy'].includes(sale)) {
-      filters.sale = sale === 'sell';
+      formattedFilters.sale = sale === 'sell';
     }
     if (price.length) {
-      filters.price = price.join('-');
+      formattedFilters.price = price.join('-');
     }
     if (tags.length) {
-      filters.tags = tags.join(',');
+      formattedFilters.tags = tags.join(',');
     }
 
-    return filters;
+    return formattedFilters;
   };
 
   const handleSubmit = filters => {
@@ -137,5 +136,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, dispatch => ({
-  loadAdverts: () => dispatch(loadAdverts())
+  loadAdverts: (filters) => dispatch(loadAdverts(filters))
 }))(AdvertsPage);

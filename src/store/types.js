@@ -7,7 +7,9 @@ export const AUTH_LOGOUT = 'auth/LOGOUT';
 export const ADVERTS_LOADED = 'adverts/LOADED';
 
 export const ADVERT_CREATED = 'advert/CREATED';
-export const ADVERT_DELETED = 'advert/LOADED';
+export const ADVERT_DELETED = 'advert/DELETED';
 export const ADVERT_LOADED = 'advert/LOADED';
+
+export const TAGS_LOADED = 'tags/LOADED';
 
 export const UI_RESET_ERROR = 'ui/RESET_ERROR';
