@@ -3,28 +3,17 @@ import T from 'prop-types';
 import { Button, Checkbox, Input } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 
-import useForm from '../../../hooks/useForm';
 import styles from './LoginForm.module.css';
 
-function LoginForm({ onSubmit }) {
-  const [form, handleChange] = useForm({
-    email: '',
-    password: '',
-    remember: false,
-  });
+const LoginForm = ({ onSubmit, form, handleChange }) => {
   const { email, password, remember } = form;
 
   const canSubmit = () => {
     return !!(email && password);
   };
 
-  const handleSubmit = ev => {
-    ev.preventDefault();
-    onSubmit(form);
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <Input
         name="email"
         className={styles.input}

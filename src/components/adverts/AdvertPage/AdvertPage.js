@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import T from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Divider, Image, Typography, Statistic, Row, Col } from 'antd';
@@ -13,22 +13,18 @@ import { formatter } from '../../../utils/numbers';
 
 const { Title } = Typography;
 
-class AdvertPage extends React.Component {
-  state = {
-    advert: null,
-    error: null,
+const AdvertPage = (props) => {
+
+  const getAdvertId = () => this.props.match.params.id;
+
+  const handleDeleteClick = () => {
+    const { history } = props;
+    deleteAdvert(getAdvertId()).then(() => history.push('/'));
   };
 
-  getAdvertId = () => this.props.match.params.id;
-
-  handleDeleteClick = () => {
-    const { history } = this.props;
-    deleteAdvert(this.getAdvertId()).then(() => history.push('/'));
-  };
-
-  getAdvert = async () => {
+  const handleGetAdvert = async () => {
     try {
-      const { result } = await getAdvert(this.getAdvertId());
+      const { result } = await getAdvert(getAdvertId());
       if (!result) {
         const error = { message: 'Not found' };
         throw error;
@@ -39,7 +35,7 @@ class AdvertPage extends React.Component {
     }
   };
 
-  renderAdvert = () => {
+  const renderAdvert = () => {
     const { advert, error } = this.state;
 
     if (error) {
@@ -87,7 +83,7 @@ class AdvertPage extends React.Component {
               danger: true,
             },
           }}
-          onConfirm={this.handleDeleteClick}
+          onConfirm={handleDeleteClick}
           style={{ marginTop: 20 }}
           block
         >
@@ -97,18 +93,16 @@ class AdvertPage extends React.Component {
     );
   };
 
-  componentDidMount() {
-    this.getAdvert();
-  }
+  useEffect(() => {
+    handleGetAdvert();
+  })
 
-  render() {
-    return (
-      <Layout title="Advert detail">
-        <Divider>Detail of your advert</Divider>
-        {this.renderAdvert()}
-      </Layout>
-    );
-  }
+  return (
+    <Layout title="Advert detail">
+      <Divider>Detail of your advert</Divider>
+      {renderAdvert()}
+    </Layout>
+  );
 }
 
 AdvertPage.propTypes = {

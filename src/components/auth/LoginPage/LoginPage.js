@@ -2,63 +2,52 @@ import React from 'react';
 import T from 'prop-types';
 import { Alert, Col, Row, Typography } from 'antd';
 
-import { login } from '../../../api/auth';
 import LoginForm from './LoginForm';
+import { connect } from 'react-redux';
+import { resetError, authLogin } from '../../../store/actions';
+import { getUi } from '../../../store/selectors';
+import useForm from '../../../hooks/useForm';
+import { useLocation } from 'react-router-dom';
 
 const { Title } = Typography;
 
-class LoginPage extends React.Component {
-  state = {
-    error: null,
+const LoginPage = ({ onLogin, loading, error }) => {
+  const location = useLocation();
+  
+  const [form, handleChange] = useForm({
+    email: '',
+    password: '',
+    remember: false,
+  });
+
+  const handleSubmit = event => {
+    console.log('click submit')
+    event.preventDefault();
+    const crendentials = form;
+    onLogin(crendentials, location);
   };
 
-  handleSubmit = credentials => {
-    const { onLogin, location, history } = this.props;
-    this.resetError();
-    login(credentials)
-      .then(() => {
-        onLogin(() => {
-          // Navigate to previously required route
-          const { from } = location.state || { from: { pathname: '/' } };
-          history.replace(from);
-        });
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-  };
-
-  resetError = () => this.setState({ error: null });
-
-  render() {
-    const { error } = this.state;
-    return (
-      <Row>
-        <Col span={8} offset={8} style={{ marginTop: 64 }}>
-          <Title style={{ textAlign: 'center' }}>Log In</Title>
-          <LoginForm onSubmit={this.handleSubmit} />
-          {error && (
-            <Alert
-              afterClose={this.resetError}
-              closable
-              message={error}
-              showIcon
-              type="error"
-              style={{ marginTop: 24 }}
-            />
-          )}
-        </Col>
-      </Row>
-    );
-  }
+  return (
+    <Row>
+      <Col span={8} offset={8} style={{ marginTop: 64 }}>
+        <Title style={{ textAlign: 'center' }}>Log In</Title>
+        <LoginForm form={form} handleChange={handleChange} onSubmit={handleSubmit} />
+        {error && (
+          <Alert
+            afterClose={resetError}
+            closable
+            message={error}
+            showIcon
+            type="error"
+            style={{ marginTop: 24 }}
+          />
+        )}
+      </Col>
+    </Row>
+  );
 }
 
-LoginPage.propTypes = {
-  onLogin: T.func.isRequired,
-  history: T.shape({ replace: T.func.isRequired }).isRequired,
-  location: T.shape({
-    state: T.shape({ from: T.shape({ pathname: T.string }) }),
-  }).isRequired,
-};
-
-export default LoginPage;
+export default connect(getUi, dispatch => ({
+  onLogin: (crendentials, location, history) => dispatch(authLogin(crendentials, location, history)),
+  resetError: () => dispatch(resetError())
+}))(LoginPage);
