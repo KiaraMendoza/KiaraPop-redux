@@ -3,25 +3,25 @@ import T from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Divider, Image, Typography, Statistic, Row, Col } from 'antd';
 
-import { deleteAdvert } from '../../../api/adverts';
 import Layout from '../../layout';
 import { ConfirmationButton } from '../../shared';
 import { DeleteOutlined } from '@ant-design/icons';
 import placeholder from '../../../assets/photo-placeholder.png';
 import Tags from '../Tags';
 import { formatter } from '../../../utils/numbers';
-import { loadAdvert } from '../../../store/actions';
+import { loadAdvert, deleteAdvert } from '../../../store/actions';
 import { getAdvertOnState, getUi } from '../../../store/selectors';
 import { connect } from 'react-redux';
 
 const { Title } = Typography;
 
-const AdvertPage = ({ loadAdvert, advert, error, history, ...props }) => {
+const AdvertPage = ({ deleteAdvert, loadAdvert, advert, error, history, ...props }) => {
 
   const getAdvertId = () => props.match.params.id;
 
-  const handleDeleteClick = () => {
-    deleteAdvert(getAdvertId()).then(() => history.push('/'));
+  const handleDeleteClick = async () => {
+    deleteAdvert(getAdvertId());
+    await history.push('/');
   };
 
   const handleGetAdvert = async () => {
@@ -111,5 +111,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, dispatch => ({
-  loadAdvert: (advertId) => dispatch(loadAdvert(advertId))
+  loadAdvert: (advertId) => dispatch(loadAdvert(advertId)),
+  deleteAdvert: (advertId) => dispatch(deleteAdvert(advertId))
 }))(AdvertPage);

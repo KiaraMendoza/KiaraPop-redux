@@ -9,6 +9,7 @@ export const ADVERTS_LOADED = 'adverts/LOADED';
 export const ADVERT_CREATED = 'advert/CREATED';
 export const ADVERT_DELETED = 'advert/DELETED';
 export const ADVERT_LOADED = 'advert/LOADED';
+export const ADVERT_ERROR = 'advert/ERROR';
 
 export const TAGS_LOADED = 'tags/LOADED';
 

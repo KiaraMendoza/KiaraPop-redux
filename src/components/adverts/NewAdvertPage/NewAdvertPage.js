@@ -2,47 +2,44 @@ import React from 'react';
 import T from 'prop-types';
 import { Alert, Divider } from 'antd';
 
-import { createAdvert } from '../../../api/adverts';
 import Layout from '../../layout';
 import NewAdvertForm from './NewAdvertForm';
+import { connect } from 'react-redux';
+// import { createAdvert } from '../../../api/adverts';
+import { resetError, createAdvert } from '../../../store/actions';
+import { getUi } from '../../../store/selectors';
 
-class NewAdvertPage extends React.Component {
-  state = {
-    error: null,
+const NewAdvertPage = ({ createAdvert, resetError, error, ...props}) => {
+
+  const handleSubmit = async (advert) => {
+    resetError();
+    await createAdvert(advert);
   };
 
-  handleSubmit = advert => {
-    const { history } = this.props;
-    this.resetError();
-    createAdvert(advert)
-      .then(({ result: advert }) => history.push(`/adverts/${advert._id}`))
-      .catch(error => this.setState({ error }));
-  };
+  return (
+    <Layout title="New advert">
+      <Divider>Create an advert</Divider>
+      <NewAdvertForm onSubmit={handleSubmit} />
+      {error && (
+        <Alert
+          afterClose={resetError}
+          closable
+          message={error}
+          showIcon
+          type="error"
+        />
+      )}
+    </Layout>
+  );
+}
 
-  resetError = () => this.setState({ error: null });
-
-  render() {
-    const { error } = this.state;
-    return (
-      <Layout title="New advert">
-        <Divider>Create an advert</Divider>
-        <NewAdvertForm onSubmit={this.handleSubmit} />
-        {error && (
-          <Alert
-            afterClose={this.resetError}
-            closable
-            message={error}
-            showIcon
-            type="error"
-          />
-        )}
-      </Layout>
-    );
+const mapStateToProps = (state) => {
+  return {
+    ui: getUi(state),
   }
 }
 
-NewAdvertPage.propTypes = {
-  history: T.shape({ push: T.func.isRequired }).isRequired,
-};
-
-export default NewAdvertPage;
+export default connect(mapStateToProps, dispatch => ({
+  createAdvert: (advertData ) => dispatch(createAdvert(advertData)),
+  resetError: () => dispatch(resetError())
+}))(NewAdvertPage);

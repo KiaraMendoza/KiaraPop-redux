@@ -26,7 +26,7 @@ const AdvertCard = ({ name, price, sale, tags }) => (
       </Col>
     </Row>
     <Divider plain></Divider>
-    <Tags tags={tags}></Tags>
+    {tags ? <Tags tags={tags}></Tags> : null}
   </Card>
 );
 AdvertCard.propTypes = {

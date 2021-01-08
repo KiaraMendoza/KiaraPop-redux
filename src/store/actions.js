@@ -1,15 +1,4 @@
-import {
-  AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_FAILURE,
-  AUTH_LOGIN_SUCCESS,
-  AUTH_LOGOUT,
-  ADVERTS_LOADED,
-  ADVERT_CREATED,
-  ADVERT_DELETED,
-  ADVERT_LOADED,
-  TAGS_LOADED,
-  UI_RESET_ERROR
-} from './types';
+import * as types from './types';
 
 // import { getLoggedUserToken } from './selectors';
 
@@ -18,17 +7,17 @@ import {adverts} from '../api';
 /* LOGIN */
 
 export const authLoginRequest = () => ({
-  type: AUTH_LOGIN_REQUEST,
+  type: types.AUTH_LOGIN_REQUEST,
 });
 
 export const authLoginFailure = error => ({
-  type: AUTH_LOGIN_FAILURE,
+  type: types.AUTH_LOGIN_FAILURE,
   error: true,
   payload: error,
 });
 
 export const authLoginSuccess = token => ({
-  type: AUTH_LOGIN_SUCCESS,
+  type: types.AUTH_LOGIN_SUCCESS,
   payload: token,
 });
 
@@ -50,15 +39,23 @@ export const authLogin = (crendentials, location) => {
 
 export const authLogout = () => {
   return {
-    type: AUTH_LOGOUT,
+    type: types.AUTH_LOGOUT,
   };
 };
 
 /* ADVERTS */
 
+export const generateAdvertError = error => {
+  return {
+    type: types.ADVERT_ERROR,
+    error: true,
+    payload: error,
+  };
+};
+
 export const advertsLoaded = adverts => {
   return {
-    type: ADVERTS_LOADED,
+    type: types.ADVERTS_LOADED,
     payload: adverts,
   };
 };
@@ -70,7 +67,7 @@ export const loadAdverts = (filters) => async (dispatch, getState) => {
 
 export const advertLoaded = advert => {
   return {
-    type: ADVERT_LOADED,
+    type: types.ADVERT_LOADED,
     payload: advert,
   };
 };
@@ -82,16 +79,40 @@ export const loadAdvert = (advertId) => async (dispatch, getState) => {
 
 export const advertCreated = advert => {
   return {
-    type: ADVERT_CREATED,
+    type: types.ADVERT_CREATED,
     payload: {
       advert,
     },
   };
 };
 
+export const createAdvert = (advertData) => async (dispatch, getState, { history, api }) => {
+  try {
+    const fetchedAdvert = await adverts.createAdvert(advertData);
+    dispatch(advertCreated(fetchedAdvert.result));
+    history.push(`/adverts/${fetchedAdvert.result._id}`)
+  } catch (error) {
+    dispatch(generateAdvertError(error));
+  }
+};
+
+export const advertDeleted = advert => {
+  return {
+    type: types.ADVERT_DELETED,
+    payload: {
+      advert,
+    },
+  };
+};
+
+export const deleteAdvert = (advertId) => async (dispatch, getState) => {
+  const fetchedAdvert = await adverts.deleteAdvert(advertId);
+  dispatch(advertDeleted(fetchedAdvert.result));
+};
+
 export const resetError = () => {
   return {
-    type: UI_RESET_ERROR,
+    type: types.UI_RESET_ERROR,
   };
 };
 
@@ -99,7 +120,7 @@ export const resetError = () => {
 
 export const tagsLoaded = tags => {
   return {
-    type: TAGS_LOADED,
+    type: types.TAGS_LOADED,
     payload: tags,
   };
 };

@@ -9,8 +9,6 @@ import { connect } from 'react-redux';
 const { Option } = Select;
 
 const TagsSelect = ({ tags, loadTags, ...props }) => {
-  console.log(tags)
-
   useEffect(() => {
     loadTags();
   }, []);
