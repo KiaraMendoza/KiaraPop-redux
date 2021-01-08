@@ -3,7 +3,7 @@ import T from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Divider, Image, Typography, Statistic, Row, Col } from 'antd';
 
-import { getAdvert, deleteAdvert } from '../../../api/adverts';
+import { deleteAdvert } from '../../../api/adverts';
 import Layout from '../../layout';
 import { ConfirmationButton } from '../../shared';
 import { DeleteOutlined } from '@ant-design/icons';

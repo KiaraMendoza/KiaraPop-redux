@@ -1,34 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Select } from 'antd';
+import { loadTags } from '../../store/actions';
+import { getTagsOnState } from '../../store/selectors';
+import { connect } from 'react-redux';
 
-import { getTags } from '../../api/adverts';
+// import { getTags } from '../../api/adverts';
 
 const { Option } = Select;
 
-class TagsSelect extends React.Component {
-  state = {
-    tags: null,
-  };
+const TagsSelect = ({ tags, loadTags, ...props }) => {
+  console.log(tags)
 
-  componentDidMount() {
-    getTags().then(({ result: tags }) => this.setState({ tags }));
-  }
+  useEffect(() => {
+    loadTags();
+  }, []);
 
-  render() {
-    const { tags } = this.state;
-    return (
-      <Select
-        allowClear
-        disabled={!tags}
-        mode="multiple"
-        placeholder="Select tags"
-        style={{ width: '100%' }}
-        {...this.props}
-      >
-        {tags && tags.map(tag => <Option key={tag}>{tag}</Option>)}
-      </Select>
-    );
+  return (
+    <Select
+      allowClear
+      disabled={!tags}
+      mode="multiple"
+      placeholder="Select tags"
+      style={{ width: '100%' }}
+      {...props}
+    >
+      {tags && tags.map(tag => <Option key={tag}>{tag}</Option>)}
+    </Select>
+  );
+
+}
+
+const mapStateToProps = (state) => {
+  return {
+    tags: getTagsOnState(state),
   }
 }
 
-export default TagsSelect;
+export default connect(mapStateToProps, dispatch => ({
+  loadTags: () => dispatch(loadTags())
+}))(TagsSelect);
+

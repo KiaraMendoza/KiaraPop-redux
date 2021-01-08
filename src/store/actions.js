@@ -7,12 +7,15 @@ import {
   ADVERT_CREATED,
   ADVERT_DELETED,
   ADVERT_LOADED,
+  TAGS_LOADED,
   UI_RESET_ERROR
 } from './types';
 
 // import { getLoggedUserToken } from './selectors';
 
 import {adverts} from '../api';
+
+/* LOGIN */
 
 export const authLoginRequest = () => ({
   type: AUTH_LOGIN_REQUEST,
@@ -51,6 +54,8 @@ export const authLogout = () => {
   };
 };
 
+/* ADVERTS */
+
 export const advertsLoaded = adverts => {
   return {
     type: ADVERTS_LOADED,
@@ -88,4 +93,18 @@ export const resetError = () => {
   return {
     type: UI_RESET_ERROR,
   };
+};
+
+/* TAGS */
+
+export const tagsLoaded = tags => {
+  return {
+    type: TAGS_LOADED,
+    payload: tags,
+  };
+};
+
+export const loadTags = () => async (dispatch, getState) => {
+  const fetchedTags = await adverts.getTags();
+  dispatch(tagsLoaded(fetchedTags.result));
 };
