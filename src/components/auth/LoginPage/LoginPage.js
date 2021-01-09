@@ -11,9 +11,7 @@ import { useLocation } from 'react-router-dom';
 
 const { Title } = Typography;
 
-const LoginPage = ({ onLogin, loading, error }) => {
-  const location = useLocation();
-  
+export const LoginPage = ({ onLogin, loading, error }) => {
   const [form, handleChange] = useForm({
     email: '',
     password: '',
@@ -24,7 +22,7 @@ const LoginPage = ({ onLogin, loading, error }) => {
     console.log('click submit')
     event.preventDefault();
     const crendentials = form;
-    onLogin(crendentials, location);
+    onLogin(crendentials);
   };
 
   return (

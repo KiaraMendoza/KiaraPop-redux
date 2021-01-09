@@ -21,16 +21,16 @@ export const authLoginSuccess = token => ({
   payload: token,
 });
 
-export const authLogin = (crendentials, location) => {
+export const authLogin = (crendentials) => {
   return async function (dispatch, getState, { history, api }) {
     dispatch(authLoginRequest());
     try {
       const token = await api.auth.login(crendentials);
       dispatch(authLoginSuccess(token));
-      // history.push('/adverts');
+      history.push('/adverts');
       // Navigate to previously required route
-      const { from } = location.state || { from: { pathname: '/' } };
-      history.replace(from);
+      // const { from } = location.state || { from: { pathname: '/' } };
+      // history.replace(from);
     } catch (error) {
       dispatch(authLoginFailure(error));
     }
