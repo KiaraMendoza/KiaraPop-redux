@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import T from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Divider, Image, Typography, Statistic, Row, Col } from 'antd';

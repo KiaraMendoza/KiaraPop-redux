@@ -1,5 +1,4 @@
 import React from 'react';
-import T from 'prop-types';
 import { Alert, Divider } from 'antd';
 
 import Layout from '../../layout';

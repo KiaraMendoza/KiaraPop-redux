@@ -19,8 +19,19 @@
   padding: 16px;
 }
 
+
 .footer {
-  background-color: #000;
-  color: hsla(0, 0%, 100%, 0.4);
+  color: #d4d4d4 !important;
+  background-color: #0e0e0e !important;
+  padding: 20px 0;
   text-align: center;
+  margin-top: 300px;
+}
+
+header a {
+  color: #d4d4d4;
+}
+
+header a:hover, header a:focus {
+  color: #ffffff;
 }

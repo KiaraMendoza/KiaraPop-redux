@@ -1,5 +1,4 @@
 import React from 'react';
-import T from 'prop-types';
 import { Alert, Col, Row, Typography } from 'antd';
 
 import LoginForm from './LoginForm';
@@ -7,7 +6,6 @@ import { connect } from 'react-redux';
 import { resetError, authLogin } from '../../../store/actions';
 import { getUi } from '../../../store/selectors';
 import useForm from '../../../hooks/useForm';
-import { useLocation } from 'react-router-dom';
 
 const { Title } = Typography;
 
@@ -19,7 +17,6 @@ export const LoginPage = ({ onLogin, loading, error }) => {
   });
 
   const handleSubmit = event => {
-    console.log('click submit')
     event.preventDefault();
     const crendentials = form;
     onLogin(crendentials);

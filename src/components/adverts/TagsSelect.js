@@ -11,7 +11,7 @@ const { Option } = Select;
 const TagsSelect = ({ tags, loadTags, ...props }) => {
   useEffect(() => {
     loadTags();
-  }, []);
+  }, [loadTags]);
 
   return (
     <Select

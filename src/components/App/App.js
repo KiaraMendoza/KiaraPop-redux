@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import T from 'prop-types';
+import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { PrivateRoute, LoginPage } from '../auth';

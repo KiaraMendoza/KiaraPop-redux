@@ -26,7 +26,7 @@ const Header = () => {
       {/* <LogoutButton className={styles.button}>Logout</LogoutButton> */}
       {loggedUserToken ? (
       <Button
-        className="header-button"
+        className={styles.button}
         onClick={() => logout().then(onLogout)}
       >
         Log out
