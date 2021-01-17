@@ -21,7 +21,7 @@ describe('loadAdverts', () => { // Async action
         const fetchedAdverts = { result: { rows: ['advert 1', 'advert 2'] } };
         // const advertsToSave = ['advert 1', 'advert 2'];
         const thunkAction = actions.loadAdverts();
-        const dispatch = jest.fn();
+        const dispatch = jest.fn(); // mock function
         advertsApi.getAdverts.mockResolvedValue(fetchedAdverts);
         await thunkAction(dispatch);
 

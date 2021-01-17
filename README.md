@@ -3,6 +3,7 @@
 This is a project made for the KeepCoding's Web Development Bootcamp. I hope you like it and send feedback to improve!
 
 ## Install -- Initialize the backend first !
+This time I'm using the KeepCoding's backend instead the Kiarapop backend, please, take that in mind.
 
 ```sh
 npm install
